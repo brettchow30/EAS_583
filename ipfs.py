@@ -23,7 +23,7 @@ def pin_to_ipfs(data):
 def get_from_ipfs(cid,content_type="json"):
   assert isinstance(cid,str), f"get_from_ipfs accepts a cid in the form of a string"
   #YOUR CODE HERE	
-  url = 'https://api.pinata.cloud/ipfs/'+cid
+  url = 'https://gateway.pinata.cloud/ipfs/'+str(cid)
   response = requests.get(url)
   if response.status_code == 200:
     data = json.loads(response.text)
