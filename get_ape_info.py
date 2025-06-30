@@ -31,19 +31,20 @@ def get_ape_info(ape_id):
     contract = web3.eth.contract(contract_address, abi=abi)
     owner = contract.functions.ownerOf(ape_id).call()
     token_uri = contract.functions.tokenURI(ape_id).call()
+    print("HI 1")
 
     if token_uri.startswith('ipfs://'):
         token_uri = token_uri.replace('ipfs://', 'https://ipfs.io/ipfs/')
-
+    print("HI 2")
     response = requests.get(token_uri)
     if response.status_code == 200:
         all_data = response.json()
     else:
         raise Exception("Failed to get image data")
-
+    print("HI 3")
     image_url = all_data.get('image')
     image_url = image_url.replace('ipfs://', 'https://ipfs.io/ipfs/')
-    
+    print("HI 4")
     eyes = None
     for trait in all_data['attributes']:
         if trait['trait_type'] == 'Eyes':
