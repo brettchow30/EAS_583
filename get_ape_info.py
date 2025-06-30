@@ -41,7 +41,7 @@ def get_ape_info(ape_id):
     else:
         raise Exception("Failed to get image data")
 
-    image_url = all_data['image']
+    image_url = all_data.get('image')
     image_url = image_url.replace('ipfs://', 'https://ipfs.io/ipfs/')
     
     eyes = None
