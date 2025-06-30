@@ -15,7 +15,7 @@ with open('ape_abi.json', 'r') as f:
 
 ############################
 # Connect to an Ethereum node
-api_url = ""  # YOU WILL NEED TO PROVIDE THE URL OF AN ETHEREUM NODE
+api_url = "https://mainnet.infura.io/v3/39cee118f0194bffa74a238cbc6d2174"  # YOU WILL NEED TO PROVIDE THE URL OF AN ETHEREUM NODE
 provider = HTTPProvider(api_url)
 web3 = Web3(provider)
 
@@ -31,20 +31,19 @@ def get_ape_info(ape_id):
     contract = web3.eth.contract(contract_address, abi=abi)
     owner = contract.functions.ownerOf(ape_id).call()
     token_uri = contract.functions.tokenURI(ape_id).call()
-    print("HI 1")
 
     if token_uri.startswith('ipfs://'):
         token_uri = token_uri.replace('ipfs://', 'https://ipfs.io/ipfs/')
-    print("HI 2")
+
     response = requests.get(token_uri)
     if response.status_code == 200:
         all_data = response.json()
     else:
         raise Exception("Failed to get image data")
-    print("HI 3")
+
     image_url = all_data.get('image')
     image_url = image_url.replace('ipfs://', 'https://ipfs.io/ipfs/')
-    print("HI 4")
+
     eyes = None
     for trait in all_data['attributes']:
         if trait['trait_type'] == 'Eyes':
