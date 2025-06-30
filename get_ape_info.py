@@ -49,7 +49,7 @@ def get_ape_info(ape_id):
             break
         else:
             eyes = None
-    
+
     data['owner'] = owner
     data['image'] = image_url
     data['eyes'] = eyes
