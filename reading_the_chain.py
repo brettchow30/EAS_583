@@ -58,10 +58,12 @@ def is_ordered_block(w3, block_num):
 	all_prior_fees = []
 	# TODO YOUR CODE HERE
 	for t in block['transactions']:
-		if 'maxFeePerGas' in t and 'maxPriorityFeePerGas' in t:
+		if 'maxFeePerGas' in t and 'maxPriorityFeePerGas' in t and 'baseFeePerGas' in block:
 			prior_fee = min(t['maxPriorityFeePerGas'], t['maxFeePerGas']-block['baseFeePerGas'])
-		else:
+		elif 'gasPrice' in t and 'baseFeePerGas' in block:
 			prior_fee = t['gasPrice'] - block['baseFeePerGas']
+		else:
+			prior_fee = t['gasPrice']
 		all_prior_fees.append(prior_fee)
 	
 	if all_prior_fees == sorted(all_prior_fees, reverse=True):
