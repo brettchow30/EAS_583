@@ -43,12 +43,13 @@ def get_ape_info(ape_id):
 
     image_url = all_data['image']
     image_url = image_url.replace('ipfs://', 'https://ipfs.io/ipfs/')
+    
+    eyes = None
     for trait in all_data['attributes']:
         if trait['trait_type'] == 'Eyes':
             eyes = trait['value']
             break
-        else:
-            eyes = None
+            
 
     data['owner'] = owner
     data['image'] = image_url
