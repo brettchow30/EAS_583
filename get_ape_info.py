@@ -32,8 +32,8 @@ def get_ape_info(ape_id):
     owner = contract.functions.ownerOf(ape_id).call()
     token_uri = contract.functions.tokenURI(ape_id).call()
 
-    if token_uri.startswith('ipfs'):
-        toekn_uri = token_uri.replace('ipfs://', 'https://ipfs.io/ipfs/')
+    if token_uri.startswith('ipfs://'):
+        token_uri = token_uri.replace('ipfs://', 'https://ipfs.io/ipfs/')
 
     response = requests.get(token_uri)
     if response.status_code == 200:
