@@ -25,7 +25,7 @@ def get_ape_info(ape_id):
     assert 0 <= ape_id, f"{ape_id} must be at least 0"
     assert 9999 >= ape_id, f"{ape_id} must be less than 10,000"
 
-    data = {}
+    data = {'owner': "", 'image': "", 'eyes': ""}
 
     # YOUR CODE HERE
     contract = web3.eth.contract(contract_address, abi=abi)
@@ -42,7 +42,6 @@ def get_ape_info(ape_id):
         raise Exception("Failed to get image data")
 
     image_url = all_data.get('image')
-    image_url = image_url.replace('ipfs://', 'https://ipfs.io/ipfs/')
 
     eyes = None
     for trait in all_data['attributes']:
@@ -50,7 +49,6 @@ def get_ape_info(ape_id):
             eyes = trait['value']
             break
             
-
     data['owner'] = owner
     data['image'] = image_url
     data['eyes'] = eyes
