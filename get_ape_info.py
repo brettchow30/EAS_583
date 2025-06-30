@@ -25,7 +25,7 @@ def get_ape_info(ape_id):
     assert 0 <= ape_id, f"{ape_id} must be at least 0"
     assert 9999 >= ape_id, f"{ape_id} must be less than 10,000"
 
-    data = {'owner': "", 'image': "", 'eyes': ""}
+    data = {}
 
     # YOUR CODE HERE
     contract = web3.eth.contract(contract_address, abi=abi)
