@@ -22,24 +22,13 @@ def sign_message(challenge, filename="secret_key.txt"):
     # TODO recover your account information for your private key and sign the given challenge
     # Use the code from the signatures assignment to sign the given challenge
     
-
-    # The private key might be stored with newline, so strip it
     private_key = key[0].strip()
 
-    w3 = Web3()
-    message = encode_defunct(challenge)
+    account = w3.eth.account.from_key(private_key)
+    eth_addr = account.address
+    signed_message = w3.eth.account.sign_message(message, private_key=private_key)
 
-    # Create account object from private key
-    acct = w3.eth.account.from_key(private_key)
-
-    # Sign the message
-    signed_message = w3.eth.account.sign_message(message, private_key=acct.key)
-
-    # Recover address from signature for verification
-    eth_addr = acct.address
-
-
-    assert eth_account.Account.recover_message(message,signature=signed_message.signature.hex()) == eth_addr, f"Failed to sign message properly"
+    assert eth_account.Account.recover_message(message, signature=sign_message.signature.hex()) == account.address, f"Failed to sign message properly"
 
     #return signed_message, account associated with the private key
     return signed_message, eth_addr
