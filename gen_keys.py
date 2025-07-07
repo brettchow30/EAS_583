@@ -28,7 +28,7 @@ def sign_message(challenge, filename="secret_key.txt"):
     eth_addr = account.address
     signed_message = w3.eth.account.sign_message(message, private_key=private_key)
 
-    assert eth_account.Account.recover_message(message, signature=sign_message.signature.hex()) == account.address, f"Failed to sign message properly"
+    assert eth_account.Account.recover_message(message, signature=signed_message.signature.hex()) == account.address, f"Failed to sign message properly"
 
     #return signed_message, account associated with the private key
     return signed_message, eth_addr
