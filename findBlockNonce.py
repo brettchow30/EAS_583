@@ -26,17 +26,20 @@ def mine_block(k, prev_hash, transactions):
         for line in transactions:
             hashVal.update(line.encode('utf-8'))
 
-        nonce_bytes = str(nonce_i).encode('utf-8')
+        nonce_bytes = str(nonce_i).encode('utf-8') #turn i into bytes
         hashVal.update(nonce_bytes)
 
         hashVal_hexademical = hashVal.hexdigest()
-        hashVal_binary = bin(int(hashVal_hexademical, 16))[2:].zfill(256)
+        bin_16 = bin(int(hashVal_hexademical, 16))
+        hashVal_binary = bin_16[2:].zfill(256) #convert to binary
 
-        if hashVal_binary.endswith('0' *k):
-            nonce = nonce_bytes
+        if hashVal_binary.endswith('0'*k):
             break
-        nonce_i +=1
+        
+        nonce_i +=1 #iterate
 
+    #Result is nonce_bytes
+    nonce = nonce_bytes
     assert isinstance(nonce, bytes), 'nonce should be of type bytes'
     return nonce
 
