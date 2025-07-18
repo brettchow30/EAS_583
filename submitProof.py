@@ -48,8 +48,8 @@ def generate_primes(num_primes):
     primes_list = []
     
     #TODO YOUR CODE HERE
+    test = 2
     while len(primes_list) < num_primes:
-        test = 2
         prime_flag = True
         for prime in primes_list:
             if test % prime == 0:
