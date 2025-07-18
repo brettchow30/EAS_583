@@ -32,27 +32,30 @@ contract Destination is AccessControl {
 
 	function unwrap(address _wrapped_token, address _recipient, uint256 _amount ) public {
 		//YOUR CODE HERE
-    require(underlying_tokens[_wrapped_token] != address(0), "WARNING: Token Invalid!");
+    address underlying_addr = underlying_tokens[_wrapped_token];
+    require(underlying_addr != address(0), "WARNING: Token Invalid!");
     BridgeToken wrapped = BridgeToken(_wrapped_token);
     require(wrapped.balanceOf(msg.sender) >= _amount, "WARNING: Not enough Balance to Unwrap!");
     
     wrapped.burnFrom(msg.sender, _amount);
-    address underlying_addr = underlying_tokens[_wrapped_token];
     emit Unwrap(underlying_addr, _wrapped_token, msg.sender, _recipient, _amount);
 	}
 
 	function createToken(address _underlying_token, string memory name, string memory symbol ) public onlyRole(CREATOR_ROLE) returns(address) {
 		//YOUR CODE HERE
-    require(wrapped_tokens[_underlying_token] == address(0), "WARNING: Token Registered Already!");
+    address wrapped = wrapped_tokens[_underlying_token];
+    require(wrapped == address(0), "WARNING: Token Registered Already!");
     BridgeToken new_token = new BridgeToken(_underlying_token, name, symbol, address(this));
 
-    underlying_tokens[address(new_token)] = _underlying_token;
-    wrapped_tokens[_underlying_token] = address(new_token);
+    address newTokenAddr = address(new_token);
+    underlying_tokens[newTokenAddr] = _underlying_token;
+    wrapped_tokens[_underlying_token] =newTokenAddr;
     tokens.push(_underlying_token);
-    emit Creation(_underlying_token, address(new_token));
-    return address(new_token);
+    emit Creation(_underlying_token, newTokenAddr);
+    return newTokenAddr;
 	}
 
 }
+
 
 
