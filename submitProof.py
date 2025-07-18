@@ -55,7 +55,7 @@ def generate_primes(num_primes):
             if test % prime == 0:
                 prime_flag = False
         if prime_flag:
-            primes_list.append(prime)
+            primes_list.append(test)
         test+=1
 
     return primes_list
