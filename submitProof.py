@@ -138,7 +138,7 @@ def sign_challenge(challenge):
     eth_sk = acct.key
 
     # TODO YOUR CODE HERE
-    msg = encode_defunct(challenge)
+    msg = encode_defunct(text=challenge)
     eth_sig_obj = acct.sign_message(msg)
 
 
