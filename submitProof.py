@@ -169,7 +169,7 @@ def send_signed_msg(proof, random_leaf):
         'gasPrice': w3.eth.gas_price
     })
     signed = acct.sign_transaction(tx)
-    tx_hash = w3.eth.send_raw_transaction(signed.rawTransaction)
+    tx_hash = w3.eth.send_raw_transaction(signed.raw_transaction)
 
     return tx_hash
 
