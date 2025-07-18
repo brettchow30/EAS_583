@@ -45,13 +45,12 @@ contract Destination is AccessControl {
 		//YOUR CODE HERE
     require(underlying_tokens[_underlying_token] == address(0), "WARNING: Token Registered Already!");
     BridgeToken new_token = new BridgeToken(_underlying_token, name, symbol, address(this));
-    address wrapped_token = address(new_token);
-
-    underlying_tokens[_underlying_token] = wrapped_token;
-    wrapped_tokens[wrapped_token] = _underlying_token;
-    tokens.push(wrapped_token);
-    emit Creation(_underlying_token, wrapped_token);
-    return wrapped_token;
+    
+    underlying_tokens[_underlying_token] = address(new_token);
+    wrapped_tokens[address(new_token)] = _underlying_token;
+    tokens.push(address(new_token));
+    emit Creation(_underlying_token, address(new_token));
+    return address(new_token);
 	}
 
 }
