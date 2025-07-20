@@ -37,7 +37,7 @@ contract Source is AccessControl {
 
 	function registerToken(address _token) onlyRole(ADMIN_ROLE) public {
 		//YOUR CODE HERE
-    require(!approved[_token], "Token registered already")
+    require(!approved[_token], "Token registered already");
     approved[_token] = true;
     tokens.push(_token);
     emit Registration(_token);
