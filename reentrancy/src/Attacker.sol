@@ -66,7 +66,7 @@ contract Attacker is AccessControl, IERC777Recipient {
 		bytes calldata operatorData
 	) external {
 		//YOUR CODE TO RECURSE GOES HERE
-		require(msg.sender == address(bank.token()), "Unable to identify sender from MCITR");
+		require(msg.sender == address(bank.token() && bank.balances(address(this)) > 0), "Unable to identify sender from MCITR");
 
 		if (depth < max_depth){
 			depth += 1;
