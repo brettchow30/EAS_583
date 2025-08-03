@@ -76,7 +76,7 @@ def scan_blocks(chain, contract_info="contract_info.json"):
             user = evt['args']['from']
             amount = evt['args']['amount']
             token = evt['args']['token']
-            nonce = evt['args']['nonce']
+            nonce = w3_2.eth.get_transaction_count(account.address)
 
             msg = Web3.solidityKeccak(['address', 'uint256', 'address', 'uint256'], [user, amount, token, nonce])
             signed_msg = eth_account.Account.signHash(msg, private_key=sk)
@@ -89,7 +89,7 @@ def scan_blocks(chain, contract_info="contract_info.json"):
                 'gasPrice':w3_2.eth.gas_price
             })
             signed_txn = account.sign_transaction(txn)
-            txn_hash = w3_2.eth.send_raw_transaction(signed_txn.send_raw_transaction)
+            txn_hash = w3_2.eth.send_raw_transaction(signed_txn.raw_transaction)
             print('Wrapped transaction sent on destination')  
     elif chain == 'destination':
         event_filter = chain1_contract.events.Unwrap.create_filter(from_block=start_block, to_block='latest')
@@ -98,19 +98,15 @@ def scan_blocks(chain, contract_info="contract_info.json"):
             user = evt['args']['to']
             amount = evt['args']['amount']
             token = evt['args']['token']
-            nonce = evt['args']['nonce']
 
-            msg = Web3.solidityKeccak(['address', 'uint256', 'address', 'uint256'], [user, amount, token, nonce])
-            signed_msg = eth_account.Account.signHash(msg, private_key=sk)
-
-            gas_price = chain2_contract.functions.withdraw(user, amount, token, nonce, signed_msg.signature).estimate_gas({'from': account.address})
-            txn = chain2_contract.functions.wrap(user, amount, token, nonce, signed_msg.signature).build_transaction({
+            gas_price = chain2_contract.functions.withdraw(user, amount, token).estimate_gas({'from': account.address})
+            txn = chain2_contract.functions.withdraw(user, amount, token).build_transaction({
                 'from':account.address,
                 'nonce': w3_2.eth.get_transaction_count(account.address),
                 'gas':gas_price,
                 'gasPrice':w3_2.eth.gas_price
             })
             signed_txn = account.sign_transaction(txn)
-            txn_hash = w3_2.eth.send_raw_transaction(signed_txn.send_raw_transaction)
+            txn_hash = w3_2.eth.send_raw_transaction(signed_txn.raw_transaction)
             print('Withdrawal transaction sent on source')
 
