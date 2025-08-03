@@ -73,16 +73,16 @@ def scan_blocks(chain, contract_info="contract_info.json"):
         event_filter = chain1_contract.events.Deposit.create_filter(from_block=start_block,to_block='latest')
         events = event_filter.get_all_entries()
         for evt in events:
-            user = evt['args']['from']
+            recipient = evt['args']['recipient']
             amount = evt['args']['amount']
             token = evt['args']['token']
-            nonce = w3_2.eth.get_transaction_count(account.address)
+            # nonce = w3_2.eth.get_transaction_count(account.address)
 
-            msg = Web3.solidityKeccak(['address', 'uint256', 'address', 'uint256'], [user, amount, token, nonce])
-            signed_msg = eth_account.Account.signHash(msg, private_key=sk)
+            # msg = Web3.solidityKeccak(['address', 'uint256', 'address', 'uint256'], [user, amount, token, nonce])
+            # signed_msg = eth_account.Account.signHash(msg, private_key=sk)
 
-            gas_price = chain2_contract.functions.wrap(user, amount, token, nonce, signed_msg.signature).estimate_gas({'from': account.address})
-            txn = chain2_contract.functions.wrap(user, amount, token, nonce, signed_msg.signature).build_transaction({
+            gas_price = chain2_contract.functions.wrap(token, recipient, amount).estimate_gas({'from': account.address})
+            txn = chain2_contract.functions.wrap(token, recipient, amount).build_transaction({
                 'from':account.address,
                 'nonce': w3_2.eth.get_transaction_count(account.address),
                 'gas':gas_price,
@@ -95,12 +95,12 @@ def scan_blocks(chain, contract_info="contract_info.json"):
         event_filter = chain1_contract.events.Unwrap.create_filter(from_block=start_block, to_block='latest')
         events = event_filter.get_all_entries()
         for evt in events:
-            user = evt['args']['to']
+            user = evt['args']['recipient']
             amount = evt['args']['amount']
-            token = evt['args']['token']
+            token = evt['args']['wrapped_token']
 
-            gas_price = chain2_contract.functions.withdraw(user, amount, token).estimate_gas({'from': account.address})
-            txn = chain2_contract.functions.withdraw(user, amount, token).build_transaction({
+            gas_price = chain2_contract.functions.withdraw(token, user, amount).estimate_gas({'from': account.address})
+            txn = chain2_contract.functions.withdraw(token, user, amount).build_transaction({
                 'from':account.address,
                 'nonce': w3_2.eth.get_transaction_count(account.address),
                 'gas':gas_price,
