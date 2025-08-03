@@ -58,8 +58,8 @@ def scan_blocks(chain, contract_info="contract_info.json"):
 
     w3 = connect_to(chain)
     w3_2 = connect_to(chain2)
-    contract_info = get_contract_info(chain)
-    contracts_info_2 = get_contract_info(chain2)
+    contract_info = get_contract_info(chain, "contract_info.json")
+    contracts_info_2 = get_contract_info(chain2, "contract_info.json")
     sk = "9b016369b693495d5a90784ba3247e58281980dbe918b5a3fc03e572a0fece68"
     account = eth_account.Account.from_key(sk)
 
