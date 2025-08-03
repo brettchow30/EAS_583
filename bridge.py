@@ -70,8 +70,16 @@ def scan_blocks(chain, contract_info="contract_info.json"):
 
 
     if chain == 'source':
-        event_filter = chain1_contract.events.Deposit.create_filter(from_block=start_block,to_block='latest')
-        events = event_filter.get_all_entries()
+        # event_filter = chain1_contract.events.Deposit.create_filter(from_block=start_block,to_block='latest')
+        # events = event_filter.get_all_entries()
+        unwrap_event = chain1_contract.events.Deposit()
+        logs = w3.eth.get_logs({
+            'fromBlock': start_block,
+            'toBlock': 'latest',
+            'address': contract_info['address'],
+            'topics': [unwrap_event.signature]
+        })
+        events = [unwrap_event().process_log(log) for log in logs]
         for evt in events:
             recipient = evt['args']['recipient']
             amount = evt['args']['amount']
@@ -92,8 +100,16 @@ def scan_blocks(chain, contract_info="contract_info.json"):
             txn_hash = w3_2.eth.send_raw_transaction(signed_txn.raw_transaction)
             print('Wrapped transaction sent on destination')  
     elif chain == 'destination':
-        event_filter = chain1_contract.events.Unwrap.create_filter(from_block=start_block, to_block='latest')
-        events = event_filter.get_all_entries()
+        # event_filter = chain1_contract.events.Unwrap.create_filter(from_block=start_block, to_block='latest')
+        # events = event_filter.get_all_entries()
+        unwrap_event = chain1_contract.events.Unwrap()
+        logs = w3.eth.get_logs({
+            'fromBlock': start_block,
+            'toBlock': 'latest',
+            'address': contract_info['address'],
+            'topics': [unwrap_event.signature]
+        })
+        events = [unwrap_event().process_log(log) for log in logs]
         for evt in events:
             user = evt['args']['recipient']
             amount = evt['args']['amount']
