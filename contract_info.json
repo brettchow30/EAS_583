@@ -1,6 +1,5 @@
 {"warden_key":"0x9b016369b693495d5a90784ba3247e58281980dbe918b5a3fc03e572a0fece68",
-  "source": { "warden_key":"0x9b016369b693495d5a90784ba3247e58281980dbe918b5a3fc03e572a0fece68",
-"address": "0x4b977e731E0a96334B2AA34064Fe33049D7B3841",
+  "source": {"address": "0x4b977e731E0a96334B2AA34064Fe33049D7B3841",
  "abi": [
   {
     "type": "constructor",
@@ -384,8 +383,7 @@
     ],
     "anonymous": false
   }
-] } ,"destination": {"warden_key":"0x9b016369b693495d5a90784ba3247e58281980dbe918b5a3fc03e572a0fece68",
-"address": "0x667FAFd99631005BEB064Ee6d8B77d4883F750F0",
+] } ,"destination": {"address": "0x667FAFd99631005BEB064Ee6d8B77d4883F750F0",
  "abi": [
   {
     "type": "constructor",
