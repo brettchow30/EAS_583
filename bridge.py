@@ -70,7 +70,7 @@ def scan_blocks(chain, contract_info="contract_info.json"):
 
 
     if chain == 'source':
-        event_filter = chain1_contract.events.Deposit.create_filter(fromBlock=start_block,toBlock='latest')
+        event_filter = chain1_contract.events.Deposit.create_filter(from_block=start_block,to_block='latest')
         events = event_filter.get_all_entries()
         for evt in events:
             user = evt['args']['from']
@@ -92,7 +92,7 @@ def scan_blocks(chain, contract_info="contract_info.json"):
             txn_hash = w3_2.eth.send_raw_transaction(signed_txn.send_raw_transaction)
             print('Wrapped transaction sent on destination')  
     elif chain == 'destination':
-        event_filter = chain1_contract.events.Unwrap.create_filter(fromBlock=start_block, toBlock='latest')
+        event_filter = chain1_contract.events.Unwrap.create_filter(from_block=start_block, to_block='latest')
         events = event_filter.get_all_entries()
         for evt in events:
             user = evt['args']['to']
