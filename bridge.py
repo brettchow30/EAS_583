@@ -72,6 +72,7 @@ def scan_blocks(chain, contract_info="contract_info.json"):
     if chain == 'source':
         event_filter = chain1_contract.events.Deposit.create_filter(from_block=start_block,to_block='latest')
         events = event_filter.get_all_entries()
+        print(start_block, w3.eth.block_number)
 
         for evt in events:
             recipient = evt['args']['recipient']
