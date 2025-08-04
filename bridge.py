@@ -66,7 +66,7 @@ def scan_blocks(chain, contract_info="contract_info.json"):
     chain1_contract = w3.eth.contract(address=contract_info['address'], abi=contract_info['abi'])
     chain2_contract = w3_2.eth.contract(address=contracts_info_2['address'], abi=contracts_info_2['abi'])
 
-    start_block = max(0, w3.eth.block_number-2000)
+    start_block = max(0, w3.eth.block_number-10)
 
 
     if chain == 'source':
@@ -77,10 +77,6 @@ def scan_blocks(chain, contract_info="contract_info.json"):
             recipient = evt['args']['recipient']
             amount = evt['args']['amount']
             token = evt['args']['token']
-            # nonce = w3_2.eth.get_transaction_count(account.address)
-
-            # msg = Web3.solidityKeccak(['address', 'uint256', 'address', 'uint256'], [user, amount, token, nonce])
-            # signed_msg = eth_account.Account.signHash(msg, private_key=sk)
 
             gas_price = chain2_contract.functions.wrap(token, recipient, amount).estimate_gas({'from': account.address})
             txn = chain2_contract.functions.wrap(token, recipient, amount).build_transaction({
@@ -93,6 +89,7 @@ def scan_blocks(chain, contract_info="contract_info.json"):
             txn_hash = w3_2.eth.send_raw_transaction(signed_txn.raw_transaction)
             print('Wrapped transaction sent on destination')  
     elif chain == 'destination':
+        start_block = max(0, w3_2.eth.block_number-10)
         event_filter = chain1_contract.events.Unwrap.create_filter(from_block=start_block, to_block='latest')
         events = event_filter.get_all_entries()
 
