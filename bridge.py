@@ -64,17 +64,13 @@ def scan_blocks(chain, contract_info="contract_info.json"):
     account = eth_account.Account.from_key(sk)
 
     chain1_contract = w3.eth.contract(address=contracts_info['address'], abi=contracts_info['abi'])
-    print("SOURCE: ", contracts_info['address'])
     chain2_contract = w3_2.eth.contract(address=contracts_info_2['address'], abi=contracts_info_2['abi'])
-    print("DEST: ", contracts_info_2['address'])
     start_block = max(0, w3.eth.block_number-10)
 
 
     if chain == 'source':
         event_filter = chain1_contract.events.Deposit.create_filter(from_block=start_block,to_block=w3.eth.block_number, argument_filters={})
         events = event_filter.get_all_entries()
-        print(start_block, w3.eth.block_number)
-        print(events)
         nonce = w3_2.eth.get_transaction_count(account.address)-1
         for evt in events:
             recipient = evt['args']['recipient']
