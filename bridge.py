@@ -75,6 +75,7 @@ def scan_blocks(chain, contract_info="contract_info.json"):
         events = event_filter.get_all_entries()
         print(start_block, w3.eth.block_number)
         print(events)
+        nonce = w3_2.eth.get_transaction_count(account.address)-1
         for evt in events:
             recipient = evt['args']['recipient']
             amount = evt['args']['amount']
@@ -83,7 +84,7 @@ def scan_blocks(chain, contract_info="contract_info.json"):
             gas_price = chain2_contract.functions.wrap(token, recipient, amount).estimate_gas({'from': account.address})
             txn = chain2_contract.functions.wrap(token, recipient, amount).build_transaction({
                 'from':account.address,
-                'nonce': w3_2.eth.get_transaction_count(account.address),
+                'nonce': nonce+1,
                 'gas':gas_price,
                 'gasPrice':w3_2.eth.gas_price
             })
@@ -94,7 +95,7 @@ def scan_blocks(chain, contract_info="contract_info.json"):
         start_block = max(0, w3_2.eth.block_number-10)
         event_filter = chain1_contract.events.Unwrap.create_filter(from_block=start_block, to_block=w3_2.eth.block_number, argument_filters={})
         events = event_filter.get_all_entries()
-
+        nonce = w3_2.eth.get_transaction_count(account.address)-1
         for evt in events:
             user = evt['args']['recipient']
             amount = evt['args']['amount']
@@ -103,7 +104,7 @@ def scan_blocks(chain, contract_info="contract_info.json"):
             gas_price = chain2_contract.functions.withdraw(token, user, amount).estimate_gas({'from': account.address})
             txn = chain2_contract.functions.withdraw(token, user, amount).build_transaction({
                 'from':account.address,
-                'nonce': w3_2.eth.get_transaction_count(account.address),
+                'nonce': nonce+1,
                 'gas':gas_price,
                 'gasPrice':w3_2.eth.gas_price
             })
