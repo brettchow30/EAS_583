@@ -92,8 +92,8 @@ def scan_blocks(chain, contract_info="contract_info.json"):
             txn_hash = w3_2.eth.send_raw_transaction(signed_txn.raw_transaction)
             print('Wrapped transaction sent on destination')  
     elif chain == 'destination':
-        start_block = max(0, w3_2.eth.block_number-10)
-        event_filter = chain1_contract.events.Unwrap.create_filter(from_block=start_block, to_block=w3_2.eth.block_number, argument_filters={})
+        start_block = max(0, w3.eth.block_number-10)
+        event_filter = chain1_contract.events.Unwrap.create_filter(from_block=start_block, to_block=w3.eth.block_number, argument_filters={})
         events = event_filter.get_all_entries()
         nonce = w3_2.eth.get_transaction_count(account.address)-1
         for evt in events:
