@@ -70,7 +70,7 @@ def scan_blocks(chain, contract_info="contract_info.json"):
 
 
     if chain == 'source':
-        event_filter = chain1_contract.events.Deposit.create_filter(from_block=start_block,to_block='latest')
+        event_filter = chain1_contract.events.Deposit.create_filter(from_block=start_block,to_block=w3.eth.block_number)
         events = event_filter.get_all_entries()
         print(start_block, w3.eth.block_number)
 
@@ -91,7 +91,7 @@ def scan_blocks(chain, contract_info="contract_info.json"):
             print('Wrapped transaction sent on destination')  
     elif chain == 'destination':
         start_block = max(0, w3_2.eth.block_number-10)
-        event_filter = chain1_contract.events.Unwrap.create_filter(from_block=start_block, to_block='latest')
+        event_filter = chain1_contract.events.Unwrap.create_filter(from_block=start_block, to_block=w3_2.eth.block_number)
         events = event_filter.get_all_entries()
 
         for evt in events:
