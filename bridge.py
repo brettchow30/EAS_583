@@ -64,8 +64,9 @@ def scan_blocks(chain, contract_info="contract_info.json"):
     account = eth_account.Account.from_key(sk)
 
     chain1_contract = w3.eth.contract(address=contract_info['address'], abi=contract_info['abi'])
+    print("SOURCE: ", contract_info['address'])
     chain2_contract = w3_2.eth.contract(address=contracts_info_2['address'], abi=contracts_info_2['abi'])
-
+    print("DEST: ", contracts_info_2['address'])
     start_block = max(0, w3.eth.block_number-10)
 
 
