@@ -80,11 +80,11 @@ def scan_blocks(chain, contract_info="contract_info.json"):
             recipient = evt['args']['recipient']
             amount = evt['args']['amount']
             token = evt['args']['token']
-
+            nonce += 1
             gas_price = chain2_contract.functions.wrap(token, recipient, amount).estimate_gas({'from': account.address})
             txn = chain2_contract.functions.wrap(token, recipient, amount).build_transaction({
                 'from':account.address,
-                'nonce': nonce+1,
+                'nonce': nonce,
                 'gas':gas_price,
                 'gasPrice':w3_2.eth.gas_price
             })
@@ -100,11 +100,11 @@ def scan_blocks(chain, contract_info="contract_info.json"):
             user = evt['args']['recipient']
             amount = evt['args']['amount']
             token = evt['args']['wrapped_token']
-
+            nonce +=1
             gas_price = chain2_contract.functions.withdraw(token, user, amount).estimate_gas({'from': account.address})
             txn = chain2_contract.functions.withdraw(token, user, amount).build_transaction({
                 'from':account.address,
-                'nonce': nonce+1,
+                'nonce': nonce,
                 'gas':gas_price,
                 'gasPrice':w3_2.eth.gas_price
             })
