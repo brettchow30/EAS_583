@@ -97,12 +97,12 @@ def scan_blocks(chain, contract_info="contract_info.json"):
         events = event_filter.get_all_entries()
         nonce = w3_2.eth.get_transaction_count(account.address)-1
         for evt in events:
-            user = evt['args']['recipient']
+            underlying_token = evt['args']['underlying_token']
+            recipient = evt['args']['to']
             amount = evt['args']['amount']
-            token = evt['args']['wrapped_token']
             nonce +=1
-            gas_price = chain2_contract.functions.withdraw(token, user, amount).estimate_gas({'from': account.address})
-            txn = chain2_contract.functions.withdraw(token, user, amount).build_transaction({
+            gas_price = chain2_contract.functions.withdraw(underlying_token, recipient, amount).estimate_gas({'from': account.address})
+            txn = chain2_contract.functions.withdraw(underlying_token, recipient, amount).build_transaction({
                 'from':account.address,
                 'nonce': nonce,
                 'gas':gas_price,
